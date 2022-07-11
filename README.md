@@ -30,20 +30,27 @@
 * Logical WAF: 파일 시스템 계층에서의 쓰기 증폭 정도. 일반적으로 LFS에서 측정하며, 해당 수치가 높을수록 성능의 저하가 심한 경향을 보인다.
 * tpmC: TPC-C에서의 성능 지표. 분당 트랜잭션 처리량을 의미한다.
 * OPS: YCSB에서의 성능 지표. 초당 operation 처리량을 의미한다.  
+* Undiscard: F2FS가 discard 명령을 내려야 하지만 아직 내리지 못한 페이지 수. 해당 수치가 높게 유지되면 불필요한 카피백이 많이 발생해 성능이 저하될 수 있다.
 
 ## 실험 환경
 
-스크린 샷과 코드 예제를 통해 사용 방법을 자세히 설명합니다.
 
-_더 많은 예제와 사용법은 [Wiki][wiki]를 참고하세요._
+        | Type | Specification |
+        |:-----------:|:----------------------------------------------------------:|
+        | OS          | Ubuntu 18.04.5 LTS                                         |
+        | CPU         | Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz (Total 32 cores)|
+        | Memory      | 32GB                                                       |
+        | Kernel      | 5.4.0-66-generic                                           |
+        | Data Device *(Optional)* | Intel® Optane™ SSD 900P Series 480GB          |
+        | Log Device *(Optional)* | Samsung 850 PRO SSD 256GB                     |
+        
 
 ## 쉘 사용법
-
-모든 개발 의존성 설치 방법과 자동 테스트 슈트 실행 방법을 운영체제 별로 작성합니다.
-
+실험 로그 기록 및 결과 그래프 생성을 위한 쉘의 사용법.  
+### hj_nq.sh
+쉘 내부의 TEST_NAME 변수를 현재 실험명으로 바꾼 후 실행한다. 실험(벤치마크)를 실행함과 동시에 해당 쉘도 실행한다.
 ```sh
-make install
-npm test
+./hj_nq.sh
 ```
 
 ## 결과 분석 방법
