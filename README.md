@@ -33,6 +33,15 @@
 * Undiscard: F2FS가 discard 명령을 내려야 하지만 아직 내리지 못한 페이지 수. 해당 수치가 높게 유지되면 불필요한 카피백이 많이 발생해 성능이 저하될 수 있다.
 
 ## 실험 환경
+| Type | Specification |
+|:-----------:|:----------------------------------------------------------:|
+| OS          | Ubuntu 18.04.5 LTS                                         |
+| CPU         | Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz (Total 32 cores)|
+| Memory      | 32GB                                                       |
+| Kernel      | 5.4.0-66-generic                                           |
+| Data Device *(Optional)* | Intel® Optane™ SSD 900P Series 480GB          |
+| Log Device *(Optional)* | Samsung 850 PRO SSD 256GB                     |  
+
 
 | Type | Configuration |
 |:----------------:|:----------------------:|
