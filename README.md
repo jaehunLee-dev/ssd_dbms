@@ -52,7 +52,7 @@
 ### trace_plot.sh
 blktrace의 읽기/쓰기를 그래프로 만든다. read/write/read&write 총 3개의 그래프가 생성된다.
 ```sh
-./trace_plot.sh ~/result/blktrace/실험명.brace
+./trace_plot.sh ~/result/blktrace/실험명.btrace
 ```
 
 ### graph.sh
@@ -63,7 +63,10 @@ blktrace의 읽기/쓰기를 그래프로 만든다. read/write/read&write 총 3
 ```
 
 ## 결과 분석 방법
+### blktrace
+blktrace 결과물의 파싱을 통해 btrace 파일이 생성된다. 
 
+### smartctl
 
 ## 프로젝트 정보
 
