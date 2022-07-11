@@ -5,13 +5,9 @@
 
 ![](../header.png)
 
-## 설치 방법
+## 배경 지식
 
-OS X & 리눅스:
-
-```sh
-npm install my-crazy-module --save
-```
+###플래시 메모리
 
 윈도우:
 
