@@ -26,7 +26,11 @@
 * LFS: Log-Structured File System. In-Place update가 아닌, 로그 구조로 파일을 저장한다. 따라서 Garbage-Collection이 요구되며, 이로 인해 Logical WAF가 높다. 대표적인 LFS로 F2FS가 있다.
 
 ### 성능 측정 지표
-* Physical WAF: SSD 계층에서의 쓰기 증폭 정도. 실험 시간 전체의 WAF인 Cumulative WAF와 특정 구간(eg.5분) 간격의 WAF인 Run WAF가 있다. 일반적으로 해당 수치가 높을수록 성능의 저하가 심한 경향을 보인다. 그러나 discard가 너무 자주 일어나게 된다면, WAF가 낮아지더라도 오히려 discard의 오버헤드로 인해 성능 저하가 일어날 가능성이 있다.  
+* Physical WAF: SSD 계층에서의 쓰기 증폭 정도. 실험 시간 전체의 WAF인 Cumulative WAF와 특정 시간(eg.5분) 간격의 WAF인 Run WAF가 있다. 일반적으로 해당 수치가 높을수록 성능의 저하가 심한 경향을 보인다. 그러나 discard가 너무 자주 일어나게 된다면, WAF가 낮아지더라도 오히려 discard의 오버헤드로 인해 성능 저하가 일어날 가능성이 있다.
+* Logical WAF: 파일 시스템 계층에서의 쓰기 증폭 정도. 일반적으로 LFS에서 측정하며, 해당 수치가 높을수록 성능의 저하가 심한 경향을 보인다.
+* tpmC: TPC-C에서의 성능 지표. 분당 트랜잭션 처리량을 의미한다.
+* OPS: YCSB에서의 성능 지표. 초당 operation 처리량을 의미한다.  
+
 ## 실험 환경
 
 스크린 샷과 코드 예제를 통해 사용 방법을 자세히 설명합니다.
