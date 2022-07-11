@@ -43,16 +43,16 @@
 
 ## 쉘 사용법
 실험 로그 기록 및 결과 그래프 생성을 위한 쉘의 사용법.  
-### hj_nq.sh
+### log_write.sh
 쉘 내부의 TEST_NAME 변수를 현재 실험명으로 바꾼 후 실행한다. 실험(벤치마크)를 실행함과 동시에 해당 쉘도 실행한다.
 ```sh
-./hj_nq.sh
+./log_write.sh
 ```
   
-### waf_tmp.sh
+### waf_cal.sh
 smartctl 로그를 통해 WAF 계산을 한다. 247행과 248행, 즉 LBA와 PBA 추출을 하여 이전 Address와의 차이를 계산하여 logical, physical 쓰기의 양을 계산한 후 WAF를 계산한다.
 ```sh
-./waf_tmp.sh 실험명_smartctl.log
+./waf_cal.sh 실험명_smartctl.log
 ```  
 
 ### trace_plot.sh
