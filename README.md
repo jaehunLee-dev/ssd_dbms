@@ -21,6 +21,8 @@
 ### YCSB
 
 ### 파일 시스템
+* FFS: Fast File System. 하드디스크의 실린더 개념을 활용하여 실린더 그룹 (블록 그룹)으로 나누어 파일을 저장한다. In-Place update 정책을 사용한다. 대표적인 FFS로 Ext4와 XFS가 있다.
+* LFS: Log-Structured File System. In-Place update가 아닌, 로그 구조로 파일을 저장한다. 따라서 Garbage-Collection이 요구되며, 이로 인해 Logical WAF가 높다. 대표적인 LFS로 F2FS가 있다.
 
 ### 성능 측정 지표
 
