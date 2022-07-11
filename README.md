@@ -12,7 +12,7 @@
   
 즉, Page 단위의 읽기/쓰기와 다르게 Block 단위의 삭제가 일어남으로써 삭제 대상 Block의 유효한 Page를 다른 Block으로 복사할 필요가 있는데, 이를 '카피백'(Copy-Back)이라 한다. 이러한 카피백으로 인해 '쓰기 증폭' (Write-Amplification) 현상이 발생한다. 쓰기 증폭 정도(Write-Amplification Factor, WAF)는 SSD의 성능에 큰 영향을 끼친다. 또한 SSD는 FTL(Flash Translation Layer)를 통해 HDD와 동일한 인터페이스를 제공한다.  
 
-(참조: https://tech.kakao.com/2016/07/15/coding-for-ssd-part-3/
+(참조: https://tech.kakao.com/2016/07/15/coding-for-ssd-part-3/)
 ### MySQL
 
 ### TPC-C
