@@ -68,6 +68,15 @@ blktrace의 읽기/쓰기를 그래프로 만든다. read/write/read&write 총 3
 ./graph.sh runwaf(ext4) runwaf(xfs) runwaf(f2fs)
 ```
 
+### rocks_strt.sh
+RocksDB - YCSB를 실행하고 결과 파일을 tee를 통해 저장한다. 직접 실행이 아닌, rocks_idle.sh 내부에서 사용된다.
+
+### rocks_idle.sh
+idle time을 주는 실험을 위해 YCSB를 실행하고 주기적으로 SIGSTOP을 통해 일시정지 한다. YCSB의 몇분 실행 당 몇분의 idle time을 줄지 코드의 수정을 통해 설정 가능하다.  
+```sh
+./rocks_idle.sh
+```
+
 ## 결과 분석 방법
 ### blktrace
 blktrace 결과물의 파싱을 통해 btrace 파일이 생성된다.  
