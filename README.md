@@ -109,13 +109,168 @@ cat /proc/fs/f2fs/sdb1/iostat_info 통해 추출한 로그.
 cat /sys/kernel/debug/f2fs/status 통해 추출한 로그. undiscard 수치를 확인할 수 있다.  
 ![undiscard](https://user-images.githubusercontent.com/86291473/178204366-f8a6935d-113b-432c-ac0c-f0b8468a4bec.jpg)  
 
+## SSD 초기화 및 File System Mount
+0. Data directory 내용 삭제
+```sh
+rm -rf /path/to/datadir/*
+```
+
+1. 기존 SSD Unmount
+```sh
+sudo umount /dev/[PARTITION]
+```
+
+2. SSD Blksidcard
+```sh
+sudo blkdiscard /dev/[DEVICE]
+```
+
+3. 파디션 생성
+```sh
+sudo fdisk /dev/[DEVICE]
+//command: n (new partition), w (write, save)
+//Whole SSD in 1 partition
+```
+
+4. File system 생성
+```sh
+//F2FS
+sudo mkfs.f2fs /dev/[PARTITION] -f
+
+//Ext4
+sudo mkfs.ext4 /dev/[PARTITION] -E discard,lazy_itable_init=0,lazy_journal_init=0 -F
+
+//XFS
+sudo mkfs.xfs /dev/[PARTITION] -f
+```
+
+5. Data directory에 mount
+```sh
+//F2FS default
+sudo mount /dev/[PARTITION] /path/to/datadir 
+
+//F2FS lfs mode
+sudo mount -o mode=lfs /dev/[PARTITION] /path/to/datadir 
+
+///Ext4, XFS
+sudo mount -o discard /dev/[PARTITION] /path/to/datadir 
+```
+
+6. 권한 설정
+```sh
+sudo chown -R USER[:GROUP] /path/to/datadir 
+sudo chmod -R 777 /path/to/datadir
+```
+
+## MySQL , TPC-C 실험
+1. Install MySQL 5.7 and TPC-C  
+Reference the [installation guide](https://github.com/meeeejin/SWE3033-F2021/blob/main/week-1/reference/tpcc-mysql-install-guide.md) to install and run TPC-C benchmark on MySQL 5.7
+
+2. my.cnf 수정
+```sh
+#
+# The MySQL database server configuration file
+#
+[client]
+user    = root
+port    = 3306
+socket  = /tmp/mysql.sock
+
+[mysql]
+prompt  = \u:\d>\_
+
+[mysqld_safe]
+socket  = /tmp/mysql.sock
+
+[mysqld]
+# Basic settings
+default-storage-engine = innodb
+pid-file        = /path/to/datadir/mysql.pid
+socket          = /tmp/mysql.sock
+port            = 3306
+datadir         = /path/to/datadir/
+log-error       = /path/to/datadir/mysql_error.log
+
+#
+# Innodb settings
+#
+# Page size
+innodb_page_size=16KB
+
+# Buffer pool settings
+
+##### Change buffer pool size according to data size(5GB, 10GB, 15GB)
+innodb_buffer_pool_size=5G
+innodb_buffer_pool_instances=8
+
+# Transaction log settings
+innodb_log_file_size=100M
+innodb_log_files_in_group=2
+innodb_log_buffer_size=32M
+
+# Log group path (iblog0, iblog1)
+# If you separate the log device, uncomment and correct the path
+#innodb_log_group_home_dir=/path/to/logdir/
+
+# Flush settings (SSD-optimized)
+# 0: every 1 seconds, 1: fsync on commits, 2: writes on commits
+innodb_flush_log_at_trx_commit=0
+innodb_flush_neighbors=0
+# innodb_flush_method=O_DIRECT
+
+##### F2FS lfs mode O_DIRECT error
+innodb_flush_method=fsync
+```
+
+3. 재실험 시 data directory 및 MySQL 초기화
+
+```sh
+//서버 종료
+./bin/mysqladmin -uroot -p[yourPassword] shutdown
+
+//SSD 초기화 및 File System Mount
+...
+...
+//
+
+
+./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
+
+./bin/mysqld_safe --skip-grant-tables --datadir=/path/to/datadir
+
+./bin/mysql -uroot
+
+root:(none)> use mysql;
+
+root:mysql> update user set authentication_string=password('yourPassword') where user='root';
+root:mysql> flush privileges;
+root:mysql> quit;
+
+./bin/mysql -uroot -p[yourPassword]
+
+root:mysql> set password = password('yourPassword');
+root:mysql> quit;
+
+./bin/mysqladmin -uroot -pyourPassword shutdown
+./bin/mysqld_safe --defaults-file=/path/to/my.cnf
+
+./bin/mysql -u root -p[yourPassword] -e "CREATE DATABASE tpcc;"
+./bin/mysql -u root -p[yourPassword] tpcc < /home/vldb/MySQL/tpcc-mysql/create_table.sql
+./bin/mysql -u root -p[yourPassword] tpcc < /home/vldb/MySQL/tpcc-mysql/add_fkey_idx.sql
+```
+4. TPC-C, 로그 쉘 시작
+```sh
+./log_write.sh
+
+./tpcc_start -h 127.0.0.1 -S /tmp/mysql.sock -d tpcc -u root -p "yourPassword" -w [Warehouse Number] -c 8 -r 10 -l [Run Time] | tee [Experiment Name].txt
+
+```
+## RocksDB, YCSB 실험
+
+
 ## 프로젝트 정보
 
 학번 - 이름 - github주소 - 이메일
-
-## MySQL , TPC-C 실험
-
-## RocksDB, YCSB 실험
 
 <!-- Markdown link & img dfn's -->
 [npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
