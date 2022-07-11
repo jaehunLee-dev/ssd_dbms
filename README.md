@@ -49,6 +49,12 @@
 ./hj_nq.sh
 ```
   
+### waf_tmp.sh
+smartctl 로그를 통해 WAF 계산을 한다. 247행과 248행, 즉 LBA와 PBA 추출을 하여 이전 Address와의 차이를 계산하여 logical, physical 쓰기의 양을 계산한 후 WAF를 계산한다.
+```sh
+./waf_tmp.sh 실험명_smartctl.log
+```  
+
 ### trace_plot.sh
 blktrace의 읽기/쓰기를 그래프로 만든다. read/write/read&write 총 3개의 그래프가 생성된다.
 ```sh
