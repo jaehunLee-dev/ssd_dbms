@@ -34,15 +34,13 @@
 
 ## 실험 환경
 
-        | Type | Specification |
-        |:-----------:|:----------------------------------------------------------:|
-        | OS          | Ubuntu 18.04.5 LTS                                         |
-        | CPU         | Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz (Total 32 cores)|
-        | Memory      | 32GB                                                       |
-        | Kernel      | 5.4.0-66-generic                                           |
-        | Data Device *(Optional)* | Intel® Optane™ SSD 900P Series 480GB          |
-        | Log Device *(Optional)* | Samsung 850 PRO SSD 256GB                      |
-        
+| Type | Configuration |
+|:----------------:|:----------------------:|
+| DB size          | 2GB (20 warehouse)     |
+| Buffer Pool Size | 500MB (25% of DB size) |
+| Benchmark Tool   | tpcc-mysql             |
+| Runtime          | 1200s                  |
+| Connections      | 8                      |
 
 ## 쉘 사용법
 실험 로그 기록 및 결과 그래프 생성을 위한 쉘의 사용법.  
