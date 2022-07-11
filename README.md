@@ -12,14 +12,22 @@
   
 즉, Page 단위의 읽기/쓰기와 다르게 Block 단위의 삭제가 일어남으로써 삭제 대상 Block의 유효한 Page를 다른 Block으로 복사할 필요가 있는데, 이를 '카피백'(Copy-Back)이라 한다. 이러한 카피백으로 인해 '쓰기 증폭' (Write-Amplification) 현상이 발생한다. 쓰기 증폭 정도(Write-Amplification Factor, WAF)는 SSD의 성능에 큰 영향을 끼친다. 또한 SSD는 FTL(Flash Translation Layer)를 통해 HDD와 동일한 인터페이스를 제공한다.  
 
-(참조: https://tech.kakao.com/2016/07/15/coding-for-ssd-part-3/)
+(참조: https://tech.kakao.com/2016/07/15/coding-for-ssd-part-3/)  
+
 ### MySQL
+MySQL은 가장 많이 쓰이는 오픈 소스 RDBMS이다. MySQL서버는 크게 MySQL 엔진과 스토리지 엔진으로 나누어지는데, MySQL 엔진은 SQL 문장을 분석, 최적화등 클라이언트로부터 오는 요청을 처리하고, 스토리지 엔진은 실제 데이터를 디스크 스토리지에 저장하거나 조회한다. MySQL에 다양한 스토리지 엔진을 사용 가능하지만 그 중에서 B+ Tree기반의 InnoDB 스토리지 엔진이 가장 널리 쓰인다. InnoDB는 메모리 영역과 디스크 영역으로 나누어 진다. 사용자가 DB를 변경한다면 in-place-update방식으로 디스크 영역에 데이터가 쓰인다.
+
+Reference: https://jeong-pro.tistory.com/239
 
 ### TPC-C
+TPC란 Transaction Processing Performance Council 에서 발표한 벤치마크 모델들이다. TCP는 OLTP 시스템의 처리 성능을 평가하는 기준이 된다. 그 중 TPC-C는 TPC-A 모델이나 TPC-B 모델보다 복잡한 유통업의 수주·발주 OLTP 성능 평가를 위한 벤치마크 모델이다.
 
 ### RocksDB
+RocksDB는 SSD에 최적화된 Key-Value 형태의 로그 구조 데 이터베이스 엔진이다. RocksDB의 데이터 저장 구조는 Log-Structured Merge Tree(LSM-tree)를 기반으로 한다. RocksDB는 쓰기 요청 시 메모리의 Active Memtable이란 이름의 임시 버퍼에 데이터를 쓴다. 해당 Memtable이 일정 크기가 되면 읽기 전용 Memtable이 되고, 일정 개수 이상의 Memtable이 모이면 저장 장치에 내려가(flush) SST 파일 형태로 저장된다. 따라서 RocksDB는 SST 파일 단위로(기본 64MB) I/O를 진행하고, 데이터를 append-only 로그에 저장함으로써 순차 쓰기를 보장한다.
 
 ### YCSB
+YCSB(Yahoo! Cloud Serving Benchmark)는 클라우드 서비스와 NoSQL의 성능을 측정하기위한 벤치마크 툴이다. YCSB는 기본적으로 제공하는 다른 작동방식을 가진 workload들이 있다. 또 사용자가 이를 수정하거나 직접 만들어 사용할 수도 있다.
+### 파일 시스템
 
 ### 파일 시스템
 * FFS: Fast File System. 하드디스크의 실린더 개념을 활용하여 실린더 그룹 (블록 그룹)으로 나누어 파일을 저장한다. In-Place update 정책을 사용한다. 대표적인 FFS로 Ext4와 XFS가 있다.
