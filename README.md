@@ -34,7 +34,6 @@
 
 ## 실험 환경
 
-
         | Type | Specification |
         |:-----------:|:----------------------------------------------------------:|
         | OS          | Ubuntu 18.04.5 LTS                                         |
@@ -42,7 +41,7 @@
         | Memory      | 32GB                                                       |
         | Kernel      | 5.4.0-66-generic                                           |
         | Data Device *(Optional)* | Intel® Optane™ SSD 900P Series 480GB          |
-        | Log Device *(Optional)* | Samsung 850 PRO SSD 256GB                     |
+        | Log Device *(Optional)* | Samsung 850 PRO SSD 256GB                      |
         
 
 ## 쉘 사용법
