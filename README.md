@@ -30,7 +30,7 @@
 * Logical WAF: 파일 시스템 계층에서의 쓰기 증폭 정도. 일반적으로 LFS에서 측정하며, 해당 수치가 높을수록 성능의 저하가 심한 경향을 보인다.
 * tpmC: TPC-C에서의 성능 지표. 분당 트랜잭션 처리량을 의미한다.
 * OPS: YCSB에서의 성능 지표. 초당 operation 처리량을 의미한다.  
-* Undiscard: F2FS가 discard 명령을 내려야 하지만 아직 내리지 못한 페이지 수. 해당 수치가 높게 유지되면 불필요한 카피백이 많이 발생해 성능이 저하될 수 있다.
+* Undiscard: F2FS가 discard 명령을 내려야 하지만 아직 내리지 못한 페이지 수. 해당 수치가 높게 유지되면 불필요한 카피백이 많이 발생해 성능이 저하될 수 있다.  
 
 ## 실험 환경
 | Type | Specification |
@@ -81,6 +81,14 @@ RWBS
 ### smartctl
 smartctl은 physical WAF 측정을 위해 사용된다. 247행과 248행을 통해 WAF 계산이 이루어지며, 247은 LBA, 248은 SSD, 즉 PBA를 뜻한다.
 ![smartctl_2](https://user-images.githubusercontent.com/86291473/178197976-a4f8b388-45a4-4941-9d59-07d247d7a8b9.jpg)  
+
+### logwaf_streams
+cat /proc/fs/f2fs/sdb1/iostat_info 통해 추출한 로그.  
+* fs_data: SSD (block device, block layer)에 전달한 write bytes
+* TOTAL  = fs_data + fs_node + fs_meta + fs_gc_data/node + fs_cp_data/node/meta
+* Logical(Filesystem) WAF = (fs_data) / TOTAL  
+
+### logwaf__streams: cat /sys/kernel/debug/f2fs/status 통해 추출한 로그.
 
 ## 프로젝트 정보
 
