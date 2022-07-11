@@ -65,6 +65,7 @@ blktrace의 읽기/쓰기를 그래프로 만든다. read/write/read&write 총 3
 ## 결과 분석 방법
 ### blktrace
 blktrace 결과물의 파싱을 통해 btrace 파일이 생성된다. 
+![btrace](https://user-images.githubusercontent.com/86291473/178197051-97663785-4ad7-464a-966b-fbac1507ceae.jpg)
 
 ### smartctl
 
