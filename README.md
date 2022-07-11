@@ -73,6 +73,8 @@ RWBS
 * D - Discard  
 
 ### smartctl
+smartctl은 physical WAF 측정을 위해 사용된다. 247행과 248행을 통해 WAF 계산이 이루어지며, 247은 LBA, 248은 SSD, 즉 PBA를 뜻한다.
+![smartctl_2](https://user-images.githubusercontent.com/86291473/178197976-a4f8b388-45a4-4941-9d59-07d247d7a8b9.jpg)  
 
 ## 프로젝트 정보
 
