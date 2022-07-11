@@ -37,7 +37,7 @@
 |:-----------:|:----------------------------------------------------------:|
 | OS          | Ubuntu 18.04.6 LTS                                         |
 | CPU         | Intel(R) Xeon(R) Gold 6248R CPU @ 3.00GHz(total 96 core)   |
-| Memory      | 1.55TB                                                     |
+| Memory      | 1.56TB                                                     |
 | Kernel      | 5.4.0-84-generic                                           |
 | Data Device | CT250 MX500 SSD                                            |
 
@@ -47,6 +47,19 @@
 쉘 내부의 TEST_NAME 변수를 현재 실험명으로 바꾼 후 실행한다. 실험(벤치마크)를 실행함과 동시에 해당 쉘도 실행한다.
 ```sh
 ./hj_nq.sh
+```
+  
+### trace_plot.sh
+blktrace의 읽기/쓰기를 그래프로 만든다. read/write/read&write 총 3개의 그래프가 생성된다.
+```sh
+./trace_plot.sh ~/result/blktrace/실험명.brace
+```
+
+### graph.sh
+실험 결과들을 그래프로 생성해준다. 해당 쉘에 사용하기 위한 실험 결과는, 추가적인 작업이 요구될 수 있다. (awk, grep 등을 이용한 특정 수치 추출 등)
+3개의 파일시스템(Ext4,XFS,F2FS)과 같이 여러 실험 결과를 동시에 그려 비교가 가능하다.
+```sh
+./graph.sh runwaf(ext4) runwaf(xfs) runwaf(f2fs)
 ```
 
 ## 결과 분석 방법
