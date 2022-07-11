@@ -125,7 +125,7 @@ sudo umount /dev/[PARTITION]
 sudo blkdiscard /dev/[DEVICE]
 ```
 
-3. 파션 생성
+3. 파 생성
 ```sh
 sudo fdisk /dev/[DEVICE]
 //command: n (new partition), w (write, save)
