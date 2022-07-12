@@ -162,7 +162,7 @@ sudo chown -R USER[:GROUP] /path/to/datadir
 sudo chmod -R 777 /path/to/datadir
 ```
 
-## MySQL , TPC-C 실험
+## MySQL, TPC-C 실험
 1. Install MySQL 5.7 and TPC-C  
 Reference the [installation guide](https://github.com/meeeejin/SWE3033-F2021/blob/main/week-1/reference/tpcc-mysql-install-guide.md) to install and run TPC-C benchmark on MySQL 5.7
 
@@ -233,7 +233,6 @@ innodb_flush_method=fsync
 ...
 //
 
-
 ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
 
 ./bin/mysqld_safe --skip-grant-tables --datadir=/path/to/datadir
@@ -260,12 +259,115 @@ root:mysql> quit;
 ```
 4. TPC-C, 로그 쉘 시작
 ```sh
-./log_write.sh
+//다운로드 //두개 커맨드 중 택 1
+//Warehouse Number: 500, 1000, 1500
+./tpcc_load -h 127.0.0.1 -d tpcc -u root -p "yourPassword" -w [Warehouse Number]
+./load.sh tpcc [Warehouse Number]
 
+
+//다운로드 완료 후 // ps -ef | grep tpcc 로 다운로드 종료 여부 확인
+./log_write.sh
 ./tpcc_start -h 127.0.0.1 -S /tmp/mysql.sock -d tpcc -u root -p "yourPassword" -w [Warehouse Number] -c 8 -r 10 -l [Run Time] | tee [Experiment Name].txt
 
 ```
-## RocksDB, YCSB 실험  
+## RocksDB, YCSB 실험
+1. Install RocksDB  
+
+- Upgrade gcc version at least 4.8
+- gflags: `sudo apt-get install libgflags-dev`
+  If this doesn't work, here's a nice tutorial:
+  (http://askubuntu.com/questions/312173/installing-gflags-12-04)
+- snappy: `sudo apt-get install libsnappy-dev`
+- zlib: `sudo apt-get install zlib1g-dev`
+- bzip2: `sudo apt-get install libbz2-dev
+
+```sh
+git clone https://github.com/facebook/rocksdb
+cd rocksdb
+make
+make check
+```
+Reference: https://github.com/meeeejin/SWE3033-F2021/blob/main/week-6/README.md
+
+2. Install YCSB
+
+- Java:
+
+```bash
+$ sudo apt-get install openjdk-8-jdk
+$ javac -version
+javac 1.8.0_292
+$ which javac
+/usr/bin/javac
+$ readlink -f /usr/bin/javac
+/usr/lib/jvm/java-8-openjdk-amd64
+$ sudo vi /etc/profile
+...
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+$ source /etc/profile
+$ echo $JAVA_HOME
+/usr/lib/jvm/java-8-openjdk-amd64 
+```
+
+- Maven 3:
+
+```bash
+$ sudo apt-get install maven
+```
+
+
+1. Clone the [YCSB](https://github.com/brianfrankcooper/YCSB) git repository:
+
+```bash
+$ git clone https://github.com/brianfrankcooper/YCSB
+```
+
+2. Compile:
+
+```bash
+$ cd YCSB
+$ mvn -pl site.ycsb:rocksdb-binding -am clean package
+```
+Reference: https://github.com/meeeejin/til/blob/master/benchmark/how-to-install-ycsb-for-rocksdb.md
+
+3. Workload 수정
+```sh
+# Yahoo! Cloud System Benchmark
+# Workload A: Update heavy workload
+#   Application example: Session store recording recent actions
+#
+#   Read/update ratio: 50/50
+#   Default data size: 1 KB records (10 fields, 100 bytes each, plus key)
+#   Request distribution: zipfian
+
+# 1G : 0 6개
+# 40000000 --> 44GB
+# 85000000 --> 93GB
+# 125000000 --> 137GB
+recordcount=40000000
+operationcount=2000000000
+workload=site.ycsb.workloads.CoreWorkload
+maxexecutiontime=7200
+
+readallfields=true
+
+readproportion=0.5
+updateproportion=0.5
+scanproportion=0
+insertproportion=0
+
+requestdistribution=zipfian
+```
+
+4. YCSB 실행
+```sh
+//Data Download
+./bin/ycsb load rocksdb -s -P workloads/[yourWorkload] -threads 8 -p rocksdb.dir=/path/to/datadir
+
+//다운로드 
+./log_write.sh
+./bin/ycsb run rocksdb -s -P workloads/[yourWorkload] -threads 8 -p rocksdb.dir=/path/to/datadir 2>&1 | tee [Experiment Name].dat
+```
 
 ## F2FS urgent 실험  
 F2FS의 attribute 값을 바꿈으로써 파일 시스템 옵션 변경이 가능하다. F2FS의 attribute는 '/sys/fs/f2fs/[DEVICE]/'에서 변경 가능하며, 그에 대한 설명 문서는 ~에서 확인 가능하다. 본 추가 실험에서는 gc_urgent 및 gc_urgent_sleep_time 인자를 변경함으로써 gc 및 discard 명령이 F2FS의 성능에 미치는 영향을 연구한다.  
