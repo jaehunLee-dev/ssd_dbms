@@ -265,7 +265,13 @@ root:mysql> quit;
 ./tpcc_start -h 127.0.0.1 -S /tmp/mysql.sock -d tpcc -u root -p "yourPassword" -w [Warehouse Number] -c 8 -r 10 -l [Run Time] | tee [Experiment Name].txt
 
 ```
-## RocksDB, YCSB 실험
+## RocksDB, YCSB 실험  
+
+## F2FS urgent 실험  
+F2FS의 attribute 값을 바꿈으로써 파일 시스템 옵션 변경이 가능하다. F2FS의 attribute는 '/sys/fs/f2fs/[DEVICE]/'에서 변경 가능하며, 그에 대한 설명 문서는 ~에서 확인 가능하다. 본 추가 실험에서는 gc_urgent 및 gc_urgent_sleep_time 인자를 변경함으로써 gc 및 discard 명령이 F2FS의 성능에 미치는 영향을 연구한다.  
+* gc_urgent: Background GC를 즉시 할지 결정하는 인자. 기본으로 0(즉시 하지 않음)으로 설정되어있으며, 1로 변경 시 Background 쓰레드에서 gc_urgent_sleep_time 주기로 GC 명령을 수행한다.
+* gc_urgent_sleep_time: gc_urgent 설정 시 gc의 주기를 결정한다. ms단위이며, 기본 500으로 설정되어 있다.
+
 
 
 ## 프로젝트 정보
