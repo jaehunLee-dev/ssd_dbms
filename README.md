@@ -103,7 +103,7 @@ cat /proc/fs/f2fs/sdb1/iostat_info 통해 추출한 로그.
 ![f2fslog](https://user-images.githubusercontent.com/86291473/178204565-a093ce0e-fcc0-4e5e-8db1-2517cbad84bf.JPG)  
 * fs_data: SSD (block device, block layer)에 전달한 write bytes
 * TOTAL  = fs_data + fs_node + fs_meta + fs_gc_data/node + fs_cp_data/node/meta
-* Logical(Filesystem) WAF = (fs_data) / TOTAL  
+* Logical(Filesystem) WAF = TOTAL / (fs_data)
 
 ### logwaf__streams
 cat /sys/kernel/debug/f2fs/status 통해 추출한 로그. undiscard 수치를 확인할 수 있다.  
